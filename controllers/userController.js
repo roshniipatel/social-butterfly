@@ -10,7 +10,6 @@ module.exports = {
     }
   },
   async getOneUser(req, res) {
-    console.log("/api/users/:id getOneUser()__________")
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select('-__v')
@@ -24,7 +23,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // create a new user
+
   async createUser(req, res) {
     try {
       const dbUserData = await User.create(req.body);
@@ -48,7 +47,7 @@ module.exports = {
 
   async deleteUser(req, res) {
     try {
-      await User.deleteOne(
+      await User.findOneAndDelete(
         { _id: req.params.userId }
       )
       res.status(200).json("deleted user")
@@ -58,17 +57,14 @@ module.exports = {
   },
 
   async addFriend(req, res) {
-    console.log('you are adding a friend');
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $addToSet: { friends: req.params.userId } },
         { runValidators: true, new: true }
       );
-      if (!user) {
-        return res.status(404).json({ message: 'no friend with that ID' });
-      }
-      res.json({ message: `${user.username} added as friend`, user });
+      
+      res.status(200).json("your friend has been successfully added!");
     } catch (err) {
       res.status(500).json(err);
     }
@@ -81,12 +77,10 @@ module.exports = {
         { $pull: { friends: { userId: req.params.userId } } },
         { runValidators: true, new: true }
       );
-      if (!friend) {
-        return res.status(404).json({ message: 'no friend with that ID' });
-      }
-      res.json({ message: `${friend.username} is not your friend anymore`, friend });
+
+      res.status(200).json("your friend has been successfully removed!");
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json(err)
     }
   }
 };
