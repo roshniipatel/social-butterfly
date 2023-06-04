@@ -15,7 +15,7 @@ module.exports = {
         .select('-__v')
 
       if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
+        return res.status(404).json({ message: 'no user found with that ID' });
       }
 
       res.json(user);
@@ -39,7 +39,7 @@ module.exports = {
         { _id: req.params.userId },
         { username: req.body.username },
       );
-      res.status(200).json("updated user")
+      res.status(200).json("user has been successfully updated!")
     } catch (err) {
       res.status(500).json(err)
     }
@@ -50,7 +50,7 @@ module.exports = {
       await User.findOneAndDelete(
         { _id: req.params.userId }
       )
-      res.status(200).json("deleted user")
+      res.status(200).json("user has been successfully deleted!")
     } catch (err) {
       res.status(500).json(err)
     }
