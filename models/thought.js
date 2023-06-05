@@ -11,15 +11,6 @@ const thoughtSchema = new Schema(
       maxlength: 280,
     },
 
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: function () {
-        let date = new Date();
-        return date.toDateString();
-      }
-    },
-
     username: {
       type: String,
       required: true,
